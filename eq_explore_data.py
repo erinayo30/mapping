@@ -21,17 +21,25 @@ path.write_text(readable_contents)
 # Examine all earthquakes in the dataset
 all_eq_dict =all_eq_data['features']
 # print(len(all_eq_dict))
-mags, lons, lats =[], [], []
+mags, lons, lats, titles = [], [], [], []
 for eq_dict in all_eq_dict:
     mag = eq_dict['properties']['mag']
     lon = eq_dict['geometry']['coordinates'][0]
     lat = eq_dict['geometry']['coordinates'][1]
+    title = eq_dict['properties']['title']
     mags.append(mag)
     lons.append(lon)
     lats.append(lat)
+    titles.append(title)
 
 title ="Global Earthquake"
-fig= px.scatter_geo(lat=lats, lon=lons, title=title)
+fig= px.scatter_geo(lat=lats, lon=lons, title=title,
+                    color=mags,
+                    color_continuous_scale= 'Viridis',
+                    labels= {'color': 'Magnitude'},
+                    projection= 'natural earth',
+                    hover_name= titles,
+)
 fig.show()
 # fig.write_image("earthquake_map.html")
     # print(mags[:10])
